@@ -1,32 +1,32 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Solicita o nome do arquivo ao usuário
-read -p "Digite o nome do arquivo: " ARQUIVO
+# Pede nome ficheiro ao utilizador
+read -p "Digite o nome ficheiro: " file
 
-# Verifica se o arquivo existe
-if [ ! -f "$ARQUIVO" ]; then
-  echo "Erro: Arquivo não encontrado."
+# Verifica existência ficheiro
+if [ ! -f "$file" ]; then
+  echo "Erro: ficheiro não encontrado."
   exit 1
 fi
 
-# Conta o número de linhas e palavras no arquivo
-NUM_LINHAS=$(wc -l < "$ARQUIVO")
-NUM_PALAVRAS=$(wc -w < "$ARQUIVO")
+# Conta nº linhas e palavras deste ficheiro
+NoLinhas=$(wc -l < "$file")
+NoPalavras=$(wc -w < "$file")
 
-echo "Informações do Arquivo:"
+echo "Informações do ficheiro:"
 echo "------------------------"
-echo "Nome do Arquivo: $ARQUIVO"
-echo "Número de Linhas: $NUM_LINHAS"
-echo "Número de Palavras: $NUM_PALAVRAS"
+echo "Nome do ficheiro: $file"
+echo "Número de Linhas: $NoLinhas"
+echo "Número de Palavras: $NoPalavras"
 echo
 
-# Mostra as 5 primeiras linhas do arquivo
-echo "5 Primeiras Linhas do Arquivo:"
-echo "-------------------------------"
-head -n 5 "$ARQUIVO"
+# Expõe as primeiras 5 linhas deste ficheiro
+echo "5 Primeiras Linhas do ficheiro:"
+head -n 5 "$file"
 echo
 
-# Filtra e mostra linhas que contenham a palavra "erro" (independente de maiúsculas/minúsculas)
+# Filtra linhas com a palavra "erro" (case-insensitive)
 echo "Linhas com a Palavra 'erro' (independente de maiúsculas/minúsculas):"
-echo "-------------------------------------------------------------------"
-grep -i "erro" "$ARQUIVO"
+grep -i "erro" "$file"
+else
+    echo "ficheiro não encontrado."
