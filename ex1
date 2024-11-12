@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+# Pede o diretório de destino
+read -p "Digite o diretório destino: " dir
+
+echo "Introduzido pelo utilizador:"
+echo "$dir"
+
+echo "Caminho passado por parâmetro:"
+echo "$1"
+
+# Verifica se o diretório passado como parâmetro existe
+if [ -d "$dir" ]; then
+    echo "Diretório existe"
+    cd "$dir" || exit 1  # Muda para o diretório ou sai se houver erro
+else
+    echo "Diretório não existe"
+    exit 1
+fi
+
+echo "Conteúdo do diretório:"
+ls -la
+
+# Cria o diretório de backup no diretório de destino
+mkdir -p "$dir/backup"
+
+# Move todos os arquivos do diretório atual para o diretório de backup
+mv *.txt "$dir/backup/"
+
+echo "Ficheiros movidos para $dir/backup"
+
+

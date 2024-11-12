@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#Comando ps lista os processos que estao a correr na maquina -e mostra todos os processos
+ps -e >> log.txt
+
+#A linha abaixo indica o fim do processo e mostra a data atual
+echo "Fim da lista de processos - $(date)" >> log.txt

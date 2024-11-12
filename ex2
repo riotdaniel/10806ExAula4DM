@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Solicita o nome do arquivo ao usuário
+read -p "Digite o nome do arquivo: " ARQUIVO
+
+# Verifica se o arquivo existe
+if [ ! -f "$ARQUIVO" ]; then
+  echo "Erro: Arquivo não encontrado."
+  exit 1
+fi
+
+# Conta o número de linhas e palavras no arquivo
+NUM_LINHAS=$(wc -l < "$ARQUIVO")
+NUM_PALAVRAS=$(wc -w < "$ARQUIVO")
+
+echo "Informações do Arquivo:"
+echo "------------------------"
+echo "Nome do Arquivo: $ARQUIVO"
+echo "Número de Linhas: $NUM_LINHAS"
+echo "Número de Palavras: $NUM_PALAVRAS"
+echo
+
+# Mostra as 5 primeiras linhas do arquivo
+echo "5 Primeiras Linhas do Arquivo:"
+echo "-------------------------------"
+head -n 5 "$ARQUIVO"
+echo
+
+# Filtra e mostra linhas que contenham a palavra "erro" (independente de maiúsculas/minúsculas)
+echo "Linhas com a Palavra 'erro' (independente de maiúsculas/minúsculas):"
+echo "-------------------------------------------------------------------"
+grep -i "erro" "$ARQUIVO"
