@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Criar grupo 'programadores'
+sudo groupadd programadores
+
+# Criar usuário 'maria'
+sudo useradd -m -s /bin/bash maria
+
+# Adicionar 'maria' ao grupo 'programadores'
+sudo usermod -aG programadores maria
+
+# Verificar grupo 'programadores'
+echo "Verificando o grupo programadores:"
+cat /etc/group | grep programadores
+getent group programadores
+
+# Verificar usuário 'maria'
+echo "Verificando o usuário maria:"
+cat /etc/passwd | grep maria
+getent passwd maria

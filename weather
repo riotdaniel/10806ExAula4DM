@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+echo "Cidade: $1"
+
+URL="https://api.openweathermap.org/data/2.5/weather?q=$1&appid=928ef4789cd737a49b60279f7026277a"
+
+infoTempo=$(curl "$URL")
+
+echo "Info do tempo da cidade $1: $infoTempo"
+
+echo $infoTempo > "$1_$(date +"%Y-%m-%d").json"

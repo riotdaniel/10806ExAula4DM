@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+
+
+# EX AVALIAÇÃO FINAL - Daniel Monge
+# Pede ao utilizador o diretório que deseja ordenar
+if [ $# -eq 0 ]; then
+  read -p "Insira o caminho do diretório pretendido: " dir
+else
+  dir=$1
+fi
+
+# Verifica se o diretório existe
+if [ ! -d "$dir" ]; then
+  echo "Diretório não encontrado. Deseja criá-lo? (s/n)"
+  read check
+  if [ "$check" == "s" ]; then
+    mkdir -p "$dir"
+    echo "Diretório criado: $dir"
+  else
+    echo "Operação abortada."
+    exit 1
+  fi
+fi
+
+# Cria os diretórios do respetivo backup
+dados=$(date +"%Y-%m-%d")
+backup_dir="$dir/backup_$dados"
+mkdir -p "$backup_dir/pequeno" "$backup_dir/medio" "$backup_dir/grande"
+
+# Variáveis para as contagens e cálculos para o funcionamento do script
+pequeno=0
+medio=0
+grande=0
+num_ficheiros=0
+tamanho_total=0
+maior_ficheiro=""
+maior_tamanho=0
+
+# Processa os respetivos ficheiros no diretório
+for fich in "$dir"/*; do
+  if [ -f "$fich" ]; then
+    num_palavras=$(wc -w < "$fich")
+    tamanho_fich=$(stat --printf="%s" "$fich")
+    tamanho_total=$((tamanho_total + tamanho_fich))
+    num_ficheiros=$((num_ficheiros + 1))
+
+    # Identifica qual é o maior ficheiro
+    if [ $tamanho_fich -gt $maior_tamanho ]; then
+      maior_tamanho=$tamanho_fich
+      maior_ficheiro=$(basename "$fich")
+    fi
+
+    # Classifica os ficheiros com base no tamanho
+    if [ $num_palavras -le 1000 ]; then
+      mv "$fich" "$backup_dir/pequeno/"
+      pequeno=$((pequeno + 1))
+    elif [ $num_palavras -le 10000 ]; then
+      mv "$fich" "$backup_dir/medio/"
+      medio=$((medio + 1))
+    else
+      mv "$fich" "$backup_dir/grande/"
+      grande=$((grande + 1))
+    fi
+  fi
+done
+
+# Calcula a média do tamanho dos respetivos ficheiros
+if [ $num_ficheiros -gt 0 ]; then
+  tam_medio=$((tamanho_total / num_ficheiros))
+else
+  tam_medio=0
+fi
+
+# Obtém a previsão do tempo com curl
+tempo=$(curl -s "https://wttr.in/?format=3")
+
+# Gera relatório do backup e respetivos ficheiros
+relatorio="$backup_dir/relatorio_$dados.txt"
+{
+  echo "Relatório de Processamento - $dados"
+  echo "----------------------------------"
+  echo "Número total de ficheiros: $num_ficheiros"
+  echo "Ficheiros pequenos (<= 1000 palavras): $pequeno"
+  echo "Ficheiros médios (1000 - 10000 palavras): $medio"
+  echo "Ficheiros grandes (> 10000 palavras): $grande"
+  echo "Nome do maior ficheiro: $maior_ficheiro"
+  echo "Tamanho do maior ficheiro: $maior_tamanho bytes"
+  echo "Tamanho médio dos ficheiros: $tam_medio bytes"
+  echo "Previsão do tempo: $tempo"
+} > "$relatorio"
+
+# Exibe relatório e mostra ao utilizador onde foi guardado
+cat "$relatorio"
+echo "Relatório salvo em: $relatorio"
