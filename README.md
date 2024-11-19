@@ -1,1 +1,1 @@
-Hello world! Por enquanto é só os ex da aula 4 :)
+Hello world! Por enquanto é só estes ex :)
