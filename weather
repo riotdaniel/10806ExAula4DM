@@ -9,3 +9,4 @@ infoTempo=$(curl "$URL")
 echo "Info do tempo da cidade $1: $infoTempo"
 
 echo $infoTempo > "$1_$(date +"%Y-%m-%d").json"
+
